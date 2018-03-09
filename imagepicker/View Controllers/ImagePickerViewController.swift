@@ -153,7 +153,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         
         view.bringSubview(toFront: more)
-//        view.bringSubview(toFront: more)
         
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
@@ -335,13 +334,11 @@ extension ViewController {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             imageView.contentMode = .scaleAspectFit
             imageView.image = pickedImage
-            // You could optionally display the image here by setting imageView.image = pickedImage
             spinner.startAnimating()
-            faceResults.isHidden = true
-            labelResults.isHidden = true
+
             
             // Base64 encode the image and create the request
             let binaryImageData = base64EncodeImage(pickedImage)
@@ -350,6 +347,11 @@ extension ViewController {
         
         dismiss(animated: true, completion: nil)
     }
+    
+    
+//    faceResults.isHidden = true
+//    labelResults.isHidden = true
+    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)

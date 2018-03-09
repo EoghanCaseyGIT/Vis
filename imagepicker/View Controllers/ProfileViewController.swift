@@ -13,13 +13,15 @@ import LocalAuthentication
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //variables
     var uploadImageButtonCenter: CGPoint!
     var profileButtonCenter: CGPoint!
     var cardButtonCenter: CGPoint!
     var doorButtonCenter: CGPoint!
+    var helpButtonCenter: CGPoint!
     
     
-    //variables
+ 
     let databaseRef = Database.database().reference()
 
     
@@ -29,6 +31,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var profile: UIButton!
     @IBOutlet weak var card: UIButton!
     @IBOutlet weak var door: UIButton!
+    @IBOutlet weak var help: UIButton!
     
     @IBOutlet weak var profile_image: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -38,29 +41,33 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         settings.adjustsImageWhenHighlighted = false
         
         if settings.currentImage == #imageLiteral(resourceName: "blackSettings"){
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.uploadImage.alpha = 1
                 self.profile.alpha = 1
                 self.card.alpha = 1
                 self.door.alpha = 1
+                self.help.alpha = 1
                 
                 self.uploadImage.center = self.uploadImageButtonCenter
                 self.profile.center = self.profileButtonCenter
                 self.card.center = self.cardButtonCenter
                 self.door.center = self.doorButtonCenter
+                self.help.center = self.helpButtonCenter
             })
             
         } else {
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.uploadImage.alpha = 0
                 self.profile.alpha = 0
                 self.card.alpha = 0
                 self.door.alpha = 0
+                self.help.alpha = 0
                 
                 self.uploadImage.center = self.settings.center
                 self.profile.center = self.settings.center
                 self.card.center = self.settings.center
                 self.door.center = self.settings.center
+                self.help.center = self.settings.center
             })
             
         }
@@ -83,6 +90,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileButtonCenter = profile.center
         cardButtonCenter = card.center
         doorButtonCenter = door.center
+        helpButtonCenter = help.center
         
     }
     //actions
@@ -112,6 +120,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     @IBAction func cardPressed(_ sender: Any) {
         goToCardDetails()
+    }
+    
+    
+    @IBAction func helpPressed(_ sender: Any) {
+        helpPressed()
     }
     
     
@@ -166,6 +179,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             
         }
     }
+    
+    func helpPressed(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let ItemInstructions = storyboard.instantiateViewController(withIdentifier: "ItemInstructions")
+        present(ItemInstructions, animated: true, completion: nil)
+    }
+    
     func logout(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let LoginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")

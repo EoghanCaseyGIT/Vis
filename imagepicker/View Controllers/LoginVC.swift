@@ -66,7 +66,7 @@ class LoginViewController: UIViewController {
                 self.sendVerificationMail()
                 
                 
-                self.presentTabBar()
+                self.helpPressed()
             })
         }
     }
@@ -91,7 +91,11 @@ class LoginViewController: UIViewController {
         }
     }
     
-    
+    func helpPressed(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let ItemInstructions = storyboard.instantiateViewController(withIdentifier: "ItemInstructions")
+        present(ItemInstructions, animated: true, completion: nil)
+    }
     
     func presentTabBar(){
         
