@@ -14,9 +14,6 @@ class CardDetailsVC: UIViewController {
     
     var refCard: DatabaseReference!
     
-    
-    
-    
     @IBOutlet weak var cardNumberTextField: UITextField!
     @IBOutlet weak var expiryDateTextField: UITextField!
     @IBOutlet weak var CVSTextField: UITextField!
@@ -51,9 +48,6 @@ class CardDetailsVC: UIViewController {
         view.addGestureRecognizer(tap)
         
         refCard = Database.database().reference().child("users").child("cards");
-        
-        
-        
     }
     
     func addCard(){

@@ -37,9 +37,9 @@
 		364EB66D200CEF02008C5663 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364EB66C200CEF02008C5663 /* ProfileViewController.swift */; };
 		364EB66F200CF139008C5663 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364EB66E200CF139008C5663 /* SettingsVC.swift */; };
 		369D98C31FE93E0900BB7C69 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369D98C21FE93E0900BB7C69 /* LoginVC.swift */; };
-		369D98C71FE9442500BB7C69 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 369D98C61FE9442500BB7C69 /* GoogleService-Info.plist */; };
 		36BA55ED2043667C005D9C72 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BA55EC2043666E005D9C72 /* LocalAuthentication.framework */; };
 		36CB574B204714BB004E8F89 /* CardDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CB574A204714BB004E8F89 /* CardDetailsVC.swift */; };
+		36CBFCF820596CB700DC72EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36CBFCF720596CB700DC72EE /* GoogleService-Info.plist */; };
 		36FBA57E20504F600087F532 /* ItemInstructionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FBA57D20504F600087F532 /* ItemInstructionsVC.swift */; };
 		36FBA58020504F720087F532 /* ProfileInstructionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FBA57F20504F720087F532 /* ProfileInstructionsVC.swift */; };
 		DC6D6714E04797FA123D80F1 /* Pods_imagepicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 249890A99ED0C03E4BF78770 /* Pods_imagepicker.framework */; };
@@ -100,9 +100,9 @@
 		364EB66C200CEF02008C5663 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		364EB66E200CF139008C5663 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		369D98C21FE93E0900BB7C69 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		369D98C61FE9442500BB7C69 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36BA55EC2043666E005D9C72 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		36CB574A204714BB004E8F89 /* CardDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsVC.swift; sourceTree = "<group>"; };
+		36CBFCF720596CB700DC72EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../MoltinV2WIP/Example/Moltin/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36FBA57D20504F600087F532 /* ItemInstructionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInstructionsVC.swift; sourceTree = "<group>"; };
 		36FBA57F20504F720087F532 /* ProfileInstructionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInstructionsVC.swift; sourceTree = "<group>"; };
 		39CF979D4FE706B3A1A1DD8B /* Pods-imagepicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imagepicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-imagepicker/Pods-imagepicker.release.xcconfig"; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 				1BFC2E861BF1AA7300885EBB /* LaunchScreen.storyboard */,
 				3609C809202079F900871AB8 /* AlertDialog.swift */,
 				1BFC2E891BF1AA7300885EBB /* Info.plist */,
-				369D98C61FE9442500BB7C69 /* GoogleService-Info.plist */,
+				36CBFCF720596CB700DC72EE /* GoogleService-Info.plist */,
 				3609C8072020786900871AB8 /* SwiftSpinner.swift */,
 			);
 			path = imagepicker;
@@ -318,7 +318,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = "Sara Robinson";
+				ORGANIZATIONNAME = "Eoghan Casey";
 				TargetAttributes = {
 					1BFC2E791BF1AA7300885EBB = {
 						CreatedOnToolsVersion = 7.1;
@@ -364,7 +364,7 @@
 			files = (
 				1BFC2E881BF1AA7300885EBB /* LaunchScreen.storyboard in Resources */,
 				1BFC2E851BF1AA7300885EBB /* Assets.xcassets in Resources */,
-				369D98C71FE9442500BB7C69 /* GoogleService-Info.plist in Resources */,
+				36CBFCF820596CB700DC72EE /* GoogleService-Info.plist in Resources */,
 				3633981020515F0300CDF10E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

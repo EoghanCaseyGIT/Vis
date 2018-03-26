@@ -36,6 +36,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var profile_image: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
+    
     @IBAction func settingsClicked(_ sender: UIButton) {
         
         settings.adjustsImageWhenHighlighted = false
@@ -161,7 +162,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 if let dict = snapshot.value as? [String: AnyObject]
                 {
                     self.usernameLabel.text = dict["username"] as? String
-                    if let profileImageURL = dict["pic"] as? String
+                    if let profileImageURL = dict["profilePic"] as? String
                     {
                         let url = URL(string: profileImageURL)
                         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
@@ -243,7 +244,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         return
                     }
                     if let urlText = url?.absoluteString{
-                        self.databaseRef.child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["pic" : urlText], withCompletionBlock: { (error, ref) in
+                        self.databaseRef.child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["profilePic" : urlText], withCompletionBlock: { (error, ref) in
                             if error != nil{
                                 print(error!)
                                 return

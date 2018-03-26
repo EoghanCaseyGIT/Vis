@@ -23,6 +23,8 @@ class ItemInstructionsVC: UIViewController, UINavigationControllerDelegate, UITe
         nextInstructions()
     }
     
+    
+    
     func skipInstructions(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let MyTabBar = storyboard.instantiateViewController(withIdentifier: "myTabBar")

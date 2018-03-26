@@ -1,24 +1,25 @@
-// Copyright 2016 Google Inc. All Rights Reserved.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+//  ImagePickerViewController.swift
+//  Final Year Project
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+//  Created by Eoghan Casey on 17/01/2018.
+//  Copyright © 2018 Eoghan Casey. All rights reserved.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 import UIKit
 import SwiftyJSON
 import LocalAuthentication
 import UserNotifications
+import Moltin
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
+class ImagePickerViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
+    
+    var products: [Product] = []
+    var category: ProductCategory!
+    
+    
+    
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
     
@@ -53,7 +54,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBAction func searchClicked(_ sender: Any) {
-        searchTheResults()
+  //      searchMyStore()
+        searchTheWeb()
+        
     }
     
     
@@ -64,8 +67,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         present(imagePicker, animated: true, completion: nil)
     }
-    
-    
     @IBAction func takePicClicked(_ sender: Any) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             let imagePicker = UIImagePickerController()
@@ -75,7 +76,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.present(imagePicker, animated: true, completion: nil)
         }
     }
-    
     @IBAction func infoClicked(_ sender: UIButton) {
         helpButton.adjustsImageWhenHighlighted = false
         
@@ -91,19 +91,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 
                 self.userHelper.center = self.helpButton.center
             })
-            
         }
-        
         if sender.currentImage == #imageLiteral(resourceName: "info") {
             sender.setImage(#imageLiteral(resourceName: "blackInfo"), for: .normal)
         } else {
             sender.setImage(#imageLiteral(resourceName: "info"), for: .normal)
         }
-
     }
-    
     @IBAction func moreClicked(_ sender: UIButton) {
-        
         more.adjustsImageWhenHighlighted = false
         
         if more.currentImage == #imageLiteral(resourceName: "horizDots") {
@@ -150,9 +145,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //changing the colour of the navigation bar content
+        UIApplication.shared.statusBarStyle = .default
         
         
-        view.bringSubview(toFront: more)
+        
+//        view.bringSubview(toFront: more)
         
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
@@ -187,24 +185,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         view.addGestureRecognizer(tap)
         
         
-        
-        
-        //Testing out the Notification functionality
-        let content = UNMutableNotificationContent()
-        content.title = "Title"
-        content.body = "Body"
-        content.sound = UNNotificationSound.default()
-        
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        
-        let request = UNNotificationRequest(identifier: "testIdentifier", content: content, trigger: trigger)
-        
-        
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        
-        
     }
     
     //Calls this function when the tap is recognized.
@@ -221,7 +201,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
 /// Image processing
 
-extension ViewController {
+extension ImagePickerViewController {
     
     
     func analyzeResults(_ dataToParse: Data) {
@@ -248,47 +228,12 @@ extension ViewController {
                 print(json)
                 let responses: JSON = json["responses"][0]
                 
-////                // Get face annotations
-//                let faceAnnotations: JSON = responses["faceAnnotations"]
-//                if faceAnnotations != nil {
-//                    let emotions: Array<String> = ["joy", "sorrow", "surprise", "anger"]
-//
-//                    let numPeopleDetected:Int = faceAnnotations.count
-//
-//                    self.faceResults.text = "Faces detected: \(numPeopleDetected)\n\nEmotions detected:\n"
-//
-//                    var emotionTotals: [String: Double] = ["sorrow": 0, "joy": 0, "surprise": 0, "anger": 0]
-//                    var emotionLikelihoods: [String: Double] = ["VERY_LIKELY": 0.9, "LIKELY": 0.75, "POSSIBLE": 0.5, "UNLIKELY":0.25, "VERY_UNLIKELY": 0.0]
-//
-//                    for index in 0..<numPeopleDetected {
-//                        let personData:JSON = faceAnnotations[index]
-//
-//                        // Sum all the detected emotions
-//                        for emotion in emotions {
-//                            let lookup = emotion + "Likelihood"
-//                            let result:String = personData[lookup].stringValue
-//                            emotionTotals[emotion]! += emotionLikelihoods[result]!
-//
-//                        }
-//                    }
-//                    // Get emotion likelihood as a % and display in UI
-//                    for (emotion, total) in emotionTotals {
-//                        let likelihood:Double = total / Double(numPeopleDetected)
-//                        let percent: Int = Int(round(likelihood * 100))
-//                        self.faceResults.text! += "\(emotion): \(percent)%\n"
-//                    }
-//                } else {
-//                    self.faceResults.text = "No faces found"
-//                }
-
-                
-
                 // Get label annotations
                 let labelAnnotations: JSON = responses["labelAnnotations"]
                 let numLabels: Int = labelAnnotations.count
                 var labels: Array<String> = []
                 if numLabels > 0 {
-                    var labelResultsText:String = ", "
+                    var labelResultsText:String = " "
                     for index in 0..<numLabels {
                         let label = labelAnnotations[index]["description"].stringValue
                         labels.append(label)
@@ -311,7 +256,7 @@ extension ViewController {
                 let numLogos: Int = logoAnnotations.count
                 var logos: Array<String> = []
                 if numLogos > 0 {
-                    var faceResultsText:String = " ,"
+                    var faceResultsText:String = " "
                     for index in 0..<numLogos {
                         let logo = logoAnnotations[index]["description"].stringValue
                         logos.append(logo)
@@ -320,7 +265,7 @@ extension ViewController {
                         if logos[logos.count - 1] != logo {
                             faceResultsText += ", \(logo), "
                         } else {
-                            faceResultsText += "\(logo)."
+                            faceResultsText += "\(logo),"
                         }
                     }
                     self.faceResults.text = faceResultsText
@@ -347,11 +292,7 @@ extension ViewController {
         
         dismiss(animated: true, completion: nil)
     }
-    
-    
-//    faceResults.isHidden = true
-//    labelResults.isHidden = true
-    
+
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
@@ -371,7 +312,7 @@ extension ViewController {
 }
 /// Networking
 
-extension ViewController {
+extension ImagePickerViewController {
     func base64EncodeImage(_ image: UIImage) -> String {
         var imagedata = UIImagePNGRepresentation(image)
         
@@ -385,8 +326,8 @@ extension ViewController {
         return imagedata!.base64EncodedString(options: .endLineWithCarriageReturn)
     }
     
-    func searchTheResults(){
-        let word = self.faceResults.text + self.userInfo.text! + self.labelResults.text
+    func searchTheWeb(){
+        let word =  self.userInfo.text! + self.faceResults.text!  + self.labelResults.text!
         if let encoded = word.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed), let url = URL(string: "https://www.google.com/#q=\(encoded)") {
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -395,9 +336,48 @@ extension ViewController {
             }
         }
     }
-    
+    //In the notification, if there is no product found in my inventory then let the alert button search the web
+    func searchMyStore(){
+        let searchText = self.userInfo.text
+        let newQuery = MoltinQuery(
+            offset: nil,
+            limit: nil,
+            sort: nil,
+            filter: "eq(description, \(String(describing: searchText)))",
+            include: [])
+        
+//        Moltin.product.get(withProductID: userInfo.text!) { (<#Result<Product?>#>) in
+//            let controller = ProductDetailViewController()
+//
+//            controller.product = self.products[0]
+//            self.navigationController?.pushViewController(controller, animated: true)
+//        }
+        
+        
+        Moltin.product.list(withQuery: newQuery) { result in
+            switch result {
+            case .success(let newProductList):
+                print(newProductList.self)
 
-    
+                if newProductList.products.count == 0 {
+
+                    let controller = ProductDetailViewController()
+                    //going to wrong place on the product list
+                    controller.product = newProductList.products[0]
+                    self.navigationController?.pushViewController(controller, animated: true)
+
+                } else {
+                    // create the alert
+                    let alert = UIAlertController(title: "We're Sorry", message: "We found no matching results.", preferredStyle: UIAlertControllerStyle.alert)
+                    // add an action (button)
+                    alert.addAction(UIAlertAction(title: "Search The Web!", style: UIAlertActionStyle.default, handler: nil))
+                    // show the alert
+                    self.present(alert, animated: true, completion: nil)
+                }
+            case .failure(let error): break
+            }
+        }
+    }
     func createRequest(with imageBase64: String) {
         // Create our request URL
         
@@ -415,12 +395,8 @@ extension ViewController {
                 "features": [
                     [
                         "type": "LABEL_DETECTION",
-                        "maxResults": 8
-                    ],
-                    [
-                        "type": "FACE_DETECTION",
                         "maxResults": 5
-                      ],
+                    ],
                     [
                         "type": "LOGO_DETECTION",
                         "maxResults": 2
@@ -433,37 +409,26 @@ extension ViewController {
             ]
         ]
         let jsonObject = JSON(jsonDictionary: jsonRequest)
-        
         // Serialize the JSON
         guard let data = try? jsonObject.rawData() else {
             return
         }
-        
         request.httpBody = data
-        
         // Run the request on a background thread
         DispatchQueue.global().async { self.runRequestOnBackgroundThread(request) }
     }
-    
     func runRequestOnBackgroundThread(_ request: URLRequest) {
         // run the request
-        
         let task: URLSessionDataTask = session.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "")
                 return
             }
-            
             self.analyzeResults(data)
         }
-        
         task.resume()
     }
 }
-
-
-
-
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -487,67 +452,3 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         return rhs < lhs
     }
 }
-
-
-
-//@IBAction func testTuch(_ sender: Any) {
-//    TouchIDCall()
-//}
-//
-//func TouchIDCall(){
-//    let authContext : LAContext = LAContext()
-//    var error : NSError?
-//
-//    if authContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthentication, error: &error){
-//
-//        authContext.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Confirm Payment?", reply: {
-//            (wasSuccesful : Bool, error : Error?) in
-//
-//            if wasSuccesful{
-//                self.searchWeb()
-//            } else{
-//                NSLog("NO")
-//            }
-//        })
-//
-//    } else {
-//
-//    }
-//}
-
-//    @IBAction func takePhoto(_ sender: Any) {
-//        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-//            let imagePicker = UIImagePickerController()
-//            imagePicker.delegate = self
-//            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-//            imagePicker.allowsEditing = false
-//            self.present(imagePicker, animated: true, completion: nil)
-//        }
-//    }
-//
-//    @IBAction func loadImageButtonTapped(_ sender: UIButton) {
-//        imagePicker.allowsEditing = false
-//        imagePicker.sourceType = .photoLibrary
-//
-//        present(imagePicker, animated: true, completion: nil)
-//    }
-
-
-//                let propertiesAnnotations: JSON = responses["propertiesAnnotations"]
-//                if propertiesAnnotations != nil {
-//                    let colours: Array<String> = ["red", "green", "blue"]
-//
-//                    var colourTotals: [String: Double] = ["red": 0, "green": 0, "blue": 0]
-//                    var colourLikelihoods: [String:]
-//                }
-
-
-//    @IBAction func searchWeb(_ sender: Any) {
-//        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-//            let imagePicker = UIImagePickerController()
-//            imagePicker.delegate = self
-//            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-//            imagePicker.allowsEditing = false
-//            self.present(imagePicker, animated: true, completion: nil)
-//
-//        }
