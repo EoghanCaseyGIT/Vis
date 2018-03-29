@@ -54,8 +54,8 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     
     
     @IBAction func searchClicked(_ sender: Any) {
-  //      searchMyStore()
-        searchTheWeb()
+        searchMyStore()
+//        searchTheWeb()
         
     }
     
@@ -338,6 +338,7 @@ extension ImagePickerViewController {
     }
     //In the notification, if there is no product found in my inventory then let the alert button search the web
     func searchMyStore(){
+        
         let searchText = self.userInfo.text
         let newQuery = MoltinQuery(
             offset: nil,
@@ -346,24 +347,21 @@ extension ImagePickerViewController {
             filter: "eq(description, \(String(describing: searchText)))",
             include: [])
         
-//        Moltin.product.get(withProductID: userInfo.text!) { (<#Result<Product?>#>) in
-//            let controller = ProductDetailViewController()
-//
-//            controller.product = self.products[0]
-//            self.navigationController?.pushViewController(controller, animated: true)
-//        }
-        
         
         Moltin.product.list(withQuery: newQuery) { result in
             switch result {
-            case .success(let newProductList):
+            case .success(let productList):
+                
+                
+                let newProductList = productList.products.filter { $0.name == searchText }
                 print(newProductList.self)
 
-                if newProductList.products.count == 0 {
+            
+                if newProductList.count == 1 {
 
                     let controller = ProductDetailViewController()
                     //going to wrong place on the product list
-                    controller.product = newProductList.products[0]
+                    controller.product = newProductList.first!
                     self.navigationController?.pushViewController(controller, animated: true)
 
                 } else {
