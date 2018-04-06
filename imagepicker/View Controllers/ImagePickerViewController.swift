@@ -326,16 +326,7 @@ extension ImagePickerViewController {
         return imagedata!.base64EncodedString(options: .endLineWithCarriageReturn)
     }
     
-    func searchTheWeb(){
-        let word =  self.userInfo.text! + self.faceResults.text!  + self.labelResults.text!
-        if let encoded = word.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed), let url = URL(string: "https://www.google.com/#q=\(encoded)") {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            } else {
-                UIApplication.shared.openURL(url)
-            }
-        }
-    }
+    
     //In the notification, if there is no product found in my inventory then let the alert button search the web
     func searchMyStore(){
         
@@ -360,22 +351,37 @@ extension ImagePickerViewController {
                 if newProductList.count == 1 {
 
                     let controller = ProductDetailViewController()
-                    //going to wrong place on the product list
                     controller.product = newProductList.first!
                     self.navigationController?.pushViewController(controller, animated: true)
 
                 } else {
-                    // create the alert
+
                     let alert = UIAlertController(title: "We're Sorry", message: "We found no matching results.", preferredStyle: UIAlertControllerStyle.alert)
-                    // add an action (button)
-                    alert.addAction(UIAlertAction(title: "Search The Web!", style: UIAlertActionStyle.default, handler: nil))
-                    // show the alert
+
+                    alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+                    let search = UIAlertAction(title: "Search The Web!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                        self.searchTheWeb()
+                    })
+                    alert.addAction(search)
+                    
                     self.present(alert, animated: true, completion: nil)
                 }
             case .failure(let error): break
             }
         }
     }
+    
+    func searchTheWeb(){
+        let word =  self.userInfo.text! + self.faceResults.text!  + self.labelResults.text!
+        if let encoded = word.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed), let url = URL(string: "https://www.google.com/#q=\(encoded)") {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
+    
     func createRequest(with imageBase64: String) {
         // Create our request URL
         

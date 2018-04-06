@@ -32,8 +32,8 @@ class CardDetailsVC: UIViewController {
     
     func finished(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let myTabBar = storyboard.instantiateViewController(withIdentifier: "myTabBar")
-        present(myTabBar, animated: true, completion: nil)
+        let profile = storyboard.instantiateViewController(withIdentifier: "ProfileViewController")
+        present(profile, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -47,11 +47,13 @@ class CardDetailsVC: UIViewController {
 
         view.addGestureRecognizer(tap)
         
-        refCard = Database.database().reference().child("users").child("cards");
+        refCard = Database.database().reference().child("cards");
     }
     
     func addCard(){
-        let key = refCard.childByAutoId().key
+        
+        
+        let key = Auth.auth().currentUser?.uid
         
         let card = ["id":key,
                     "cardNumber": cardNumberTextField.text! as String,
@@ -59,9 +61,17 @@ class CardDetailsVC: UIViewController {
                     "CVSNumber": CVSTextField.text! as String
         ]
         
-        refCard.child(key).setValue(card)
+        refCard.child(key!).setValue(card)
         
-        labelMessage.text = "Card Added Successfully"
+        // create the alert
+        let alert = UIAlertController(title: "", message: "Your card details have been added/updated.", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add an action (button)
+        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
     //Calls this function when the tap is recognized.
