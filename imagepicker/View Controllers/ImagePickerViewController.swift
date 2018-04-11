@@ -20,6 +20,8 @@ class ImagePickerViewController: UIViewController, UIImagePickerControllerDelega
     
     
     
+    
+    
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
     
@@ -330,7 +332,7 @@ extension ImagePickerViewController {
     //In the notification, if there is no product found in my inventory then let the alert button search the web
     func searchMyStore(){
         
-        let searchText = self.userInfo.text
+        let searchText = self.faceResults.text! + self.labelResults.text! + self.userInfo.text!
         let newQuery = MoltinQuery(
             offset: nil,
             limit: nil,
@@ -338,15 +340,18 @@ extension ImagePickerViewController {
             filter: "eq(description, \(String(describing: searchText)))",
             include: [])
         
+        print(searchText)
+        
         
         Moltin.product.list(withQuery: newQuery) { result in
             switch result {
             case .success(let productList):
                 
                 
-                let newProductList = productList.products.filter { $0.name == searchText }
-                print(newProductList.self)
 
+                
+            let newProductList = productList.products.filter {$0.sku == searchText}
+                print(newProductList.self)
             
                 if newProductList.count == 1 {
 
