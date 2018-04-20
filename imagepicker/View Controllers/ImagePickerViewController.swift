@@ -342,23 +342,33 @@ extension ImagePickerViewController {
         
         print(searchText)
         
-        
         Moltin.product.list(withQuery: newQuery) { result in
             switch result {
             case .success(let productList):
-                
-                
-
                 
             let newProductList = productList.products.filter {$0.sku == searchText}
                 print(newProductList.self)
             
                 if newProductList.count == 1 {
+                    
+                    let alert = UIAlertController(title: "Great!", message: "We have a match in our store!", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    
+                    let search = UIAlertAction(title: "See our Result!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                        let controller = ProductDetailViewController()
+                        controller.product = newProductList.first!
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    })
+                    alert.addAction(search)
+                    
+                    let web = UIAlertAction(title: "No, Search The Web Instead!", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                        self.searchTheWeb()
+                    })
+                    alert.addAction(web)
+                    
+                    self.present(alert, animated: true, completion: nil)
 
-                    let controller = ProductDetailViewController()
-                    controller.product = newProductList.first!
-                    self.navigationController?.pushViewController(controller, animated: true)
-
+                    
                 } else {
 
                     let alert = UIAlertController(title: "We're Sorry", message: "We found no matching results.", preferredStyle: UIAlertControllerStyle.alert)
@@ -371,7 +381,7 @@ extension ImagePickerViewController {
                     
                     self.present(alert, animated: true, completion: nil)
                 }
-            case .failure(let error): break
+            case .failure(let _): break
             }
         }
     }
@@ -461,3 +471,4 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         return rhs < lhs
     }
 }
+
